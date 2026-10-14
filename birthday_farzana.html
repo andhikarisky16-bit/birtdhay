@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070912">
+<meta name="description" content="Mini birthday adventure interaktif untuk FARZANA.">
+<title>Happy Birthday FARZANA · Mini Birthday Adventure</title>
+<link rel="stylesheet" href="birthday_farzana.css">
+</head>
+<body data-state="dark">
+
+<noscript>
+  <div class="noscript">Website ini membutuhkan JavaScript untuk berjalan. Aktifkan JavaScript lalu muat ulang halaman.</div>
+</noscript>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="cursorGlow" aria-hidden="true"></div>
+<div id="veil" aria-hidden="true"></div>
+<div id="chapter" aria-hidden="true"><span id="chapterText"></span></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============ 1. DARK INTRO ============ -->
+<section class="scene scene--intro is-active" id="sceneIntro">
+  <div class="intro__dark" id="introDark"></div>
+  <div class="intro__bloom" id="introBloom" aria-hidden="true"></div>
+
+  <div class="intro__content">
+    <p class="intro__hint" id="introHint">It's dark in here<span class="ellipsis">...</span></p>
+
+    <button class="switch" id="lightSwitch" type="button" aria-label="Nyalakan lampu">
+      <span class="switch__plate">
+        <span class="switch__track"></span>
+        <span class="switch__lever"></span>
+      </span>
+      <span class="switch__label">TURN ON THE LIGHT</span>
+    </button>
+
+    <p class="intro__sub" id="introSub">Tekan saklar untuk memulai petualangan</p>
+  </div>
+</section>
+
+<!-- ============ 2. ROOM ============ -->
+<section class="scene scene--room" id="sceneRoom" aria-hidden="true">
+  <div class="room" id="room">
+
+    <div class="room__wall"></div>
+    <div class="room__night"></div>
+    <div class="room__floor"></div>
+    <div class="room__floorNight"></div>
+
+    <div class="starfield" id="starfield" aria-hidden="true"></div>
+
+    <div class="ceiling" id="ceiling" aria-hidden="true">
+      <span class="ceiling__wire"></span>
+      <span class="ceiling__bulbs" id="bulbs"></span>
+      <span class="ceiling__shade"></span>
+      <span class="ceiling__glow"></span>
+    </div>
+
+    <div class="bunting" id="bunting" aria-hidden="true"><span class="bunting__rope"></span></div>
+
+    <button class="banner interactive room-item" id="banner" type="button" aria-label="Banner Happy Birthday">
+      <span class="banner__rope banner__rope--l" aria-hidden="true"></span>
+      <span class="banner__rope banner__rope--r" aria-hidden="true"></span>
+      <span class="banner__cloth">
+        <span class="banner__text">HAPPY BIRTHDAY</span>
+      </span>
+    </button>
+
+    <button class="nameplate interactive room-item" id="nameplate" type="button" aria-label="Nama Farzana">
+      FARZANA
+    </button>
+
+    <button class="clock interactive room-item" id="wallClock" type="button" aria-label="Jam dinding">
+      <span class="clock__face">
+        <span class="clock__tick" style="--t:0"></span>
+        <span class="clock__tick" style="--t:90"></span>
+        <span class="clock__tick" style="--t:180"></span>
+        <span class="clock__tick" style="--t:270"></span>
+        <span class="clock__hand clock__hand--h" id="handH"></span>
+        <span class="clock__hand clock__hand--m" id="handM"></span>
+        <span class="clock__hand clock__hand--s" id="handS"></span>
+        <span class="clock__pin"></span>
+      </span>
+    </button>
+
+    <button class="lamp interactive room-item" id="wallLamp" type="button" aria-label="Lampu dinding">
+      <span class="lamp__shade"></span>
+      <span class="lamp__bulb"></span>
+      <span class="lamp__light"></span>
+    </button>
+
+    <button class="frame interactive room-item" id="wallFrame" type="button" aria-label="Bingkai foto">
+      <span class="frame__inner">
+        <span class="frame__pic"></span>
+        <span class="frame__shine"></span>
+      </span>
+    </button>
+
+    <div class="balloons" id="balloons" aria-hidden="false"></div>
+
+    <div class="table room-item" aria-hidden="true">
+      <span class="table__top"></span>
+      <span class="table__cloth">
+        <span class="table__trim"></span>
+      </span>
+      <span class="table__leg table__leg--l"></span>
+      <span class="table__leg table__leg--r"></span>
+    </div>
+
+    <div class="cake-stage" id="cakeStage">
+      <div class="cake" id="cake" role="button" tabindex="0" aria-label="Kue ulang tahun">
+        <div class="candles" id="candles">
+          <span class="candle candle--a">
+            <span class="flame-wrap"><span class="flame"></span></span>
+          </span>
+          <span class="candle candle--b">
+            <span class="flame-wrap"><span class="flame"></span></span>
+          </span>
+          <span class="candle candle--c">
+            <span class="flame-wrap"><span class="flame"></span></span>
+          </span>
+        </div>
+
+        <div class="cake__tier cake__tier--3">
+          <span class="cake__icing"></span>
+          <span class="cake__dots"></span>
+        </div>
+        <div class="cake__tier cake__tier--2">
+          <span class="cake__icing"></span>
+          <span class="cake__dots"></span>
+        </div>
+        <div class="cake__tier cake__tier--1">
+          <span class="cake__icing"></span>
+          <span class="cake__dots"></span>
+        </div>
+        <span class="cake__plate"></span>
+      </div>
+
+      <div class="hold-bar" id="holdBar" aria-hidden="true"><span class="hold-bar__fill"></span></div>
+      <p class="cake__hint" id="cakeHint">Tekan &amp; tahan api lilin</p>
+    </div>
+
+    <div class="gifts-decor" aria-hidden="true">
+      <span class="gift gift--sm gift--sm1"><i></i></span>
+      <span class="gift gift--sm gift--sm2"><i></i></span>
+      <span class="gift gift--sm gift--sm3"><i></i></span>
+    </div>
+
+    <button class="gift gift--main" id="giftMain" type="button" aria-label="Kado terkunci">
+      <span class="gift__beam" aria-hidden="true"></span>
+      <span class="gift__inner">
+        <span class="gift__box"></span>
+        <span class="gift__ribV"></span>
+        <span class="gift__ribH"></span>
+        <span class="gift__lid">
+          <span class="gift__lidTop"></span>
+          <span class="gift__bow"></span>
+        </span>
+        <span class="gift__lock" id="giftLock">🔒</span>
+      </span>
+    </button>
+
+    <button class="hat interactive room-item" id="partyHat" type="button" aria-label="Topi pesta">
+      <span class="hat__cone"></span>
+      <span class="hat__band"></span>
+      <span class="hat__pom"></span>
+    </button>
+
+    <div class="room__dim" id="roomDim" aria-hidden="true"></div>
+    <div class="room__foreground" aria-hidden="true">
+      <span class="streamer streamer--1"></span>
+      <span class="streamer streamer--2"></span>
+      <span class="streamer streamer--3"></span>
+      <span class="confetti-bit" style="--x:8%;--d:0s"></span>
+      <span class="confetti-bit" style="--x:22%;--d:1.2s"></span>
+      <span class="confetti-bit" style="--x:38%;--d:2.1s"></span>
+      <span class="confetti-bit" style="--x:63%;--d:.6s"></span>
+      <span class="confetti-bit" style="--x:77%;--d:1.8s"></span>
+      <span class="confetti-bit" style="--x:91%;--d:2.6s"></span>
+    </div>
+  </div>
+
+  <div class="hud">
+    <div class="hud__badge">
+      <span class="hud__dot"></span>
+      <span>FARZANA'S BIRTHDAY</span>
+    </div>
+    <div class="hud__chapter" id="hudChapter">The Dark Room</div>
+  </div>
+
+  <p class="hint" id="roomHint"></p>
+
+  <div class="bigtext" id="wishText" aria-hidden="true">Make a wish... ✨</div>
+  <div class="bigtext bigtext--magic" id="magicText1" aria-hidden="true">Your wish is on its way... ✨</div>
+  <div class="bigtext bigtext--magic" id="magicText2" aria-hidden="true">A little surprise is waiting for you...</div>
+</section>
+
+<!-- ============ 9-13. KADO + QUIZ ============ -->
+<div class="modal" id="quizModal" aria-hidden="true">
+  <div class="modal__backdrop" id="quizBackdrop"></div>
+
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <span class="modal__glow" aria-hidden="true"></span>
+
+    <div class="modal__top">
+      <span class="lockbadge" id="lockBadge">🔒</span>
+      <div class="progress" id="quizProgress" aria-hidden="true"></div>
+      <p class="progress__label" id="quizLabel">Challenge 1 of 3</p>
+    </div>
+
+    <div class="modal__intro" id="quizIntro">
+      <h2 id="quizTitle">Your surprise is locked 🔐</h2>
+      <p class="modal__lead">Complete 3 challenges to unlock it.</p>
+      <p class="modal__sub">Satu soal logaritma, satu trigonometri, dan satu sistem persamaan linear.</p>
+      <button class="btn btn--primary" id="startChallenge" type="button">Start Challenge</button>
+      <button class="btn btn--ghost" id="introLater" type="button">Maybe later</button>
+    </div>
+
+    <div class="quiz" id="quizBody" hidden>
+      <p class="quiz__tag" id="quizTag">SOAL 1 · LOGARITMA</p>
+      <h3 class="quiz__q" id="quizQuestion"></h3>
+      <div class="quiz__options" id="quizOptions"></div>
+      <p class="quiz__feedback" id="quizFeedback" role="status" aria-live="polite"></p>
+      <button class="btn btn--ghost btn--small" id="giveUp" type="button">Give up</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 15-16. ENDING ============ -->
+<section class="scene scene--ending" id="sceneEnding" aria-hidden="true">
+  <div class="ending__stars" aria-hidden="true"></div>
+  <div class="ending__inner">
+    <p class="ending__eyebrow" id="endingEyebrow">and so...</p>
+    <h1 class="ending__title" id="endingTitle"></h1>
+    <div class="ending__msg" id="endingMsg"></div>
+    <button class="btn btn--primary btn--replay" id="replayBtn" type="button">Replay 🔄</button>
+  </div>
+</section>
+
+<script src="birthday_farzana.js"></script>
+</body>
+</html>
